@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/nav";
+import { cn } from "@/lib/utils";
+import Sidebar from "@/components/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +19,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar/>
-        {children}
-        </body>
+      <body className={cn("bg-secondary", inter.className)}>
+        <div className="main">
+          <div className="gradient"></div>
+        </div>
+
+        <main className=" relative z-10 flex flex-col mx-auto">
+          
+          <Navbar className="hide-on-print" />
+          <div className="hidden md:flex mt-16 w-20 flex-col fixed inset-y-0 ">
+            <Sidebar/>
+          </div>
+
+         
+
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

@@ -8,7 +8,7 @@ export default function Home() {
     <div className="hidden md:flex mt-16 max-w-48 flex-col fixed inset-y-0 ">
         <Sidebar/>
     </div>
-    <div className="flex flex-col w-full md:ml-48">
+    <div className="mt-16 h-auto flex flex-col  md:ml-48">
       <Dashboard/>
     </div>
    </main>

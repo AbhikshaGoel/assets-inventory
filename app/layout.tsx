@@ -26,6 +26,9 @@ export default function RootLayout({
         </div>
         <main className="relative z-10">
           <Navbar  />
+          <div className="hidden md:flex mt-16 max-w-48 flex-col fixed inset-y-0 ">
+              <Sidebar/>
+          </div>
           {children}
         </main>
       </body>

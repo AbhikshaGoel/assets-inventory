@@ -1,126 +1,79 @@
-
-"use client"
+"use client";
 import React from 'react'
-
 import Image from "next/image"
 import Link from "next/link"
-import {
-  ChevronLeft,
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
-  Upload,
-  Users2,
-  GitPullRequest,
-} from "lucide-react"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useRouter, usePathname } from "next/navigation"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { TooltipProvider } from "@radix-ui/react-tooltip"
+import { ChevronLeft, Home, LineChart, Package, PanelLeft, PlusCircle, Search, Settings, ShoppingCart, Upload, Users2, GitPullRequest, Plus } from "lucide-react"
 
-const Sidebar = () => {
-  return (
-    <div>
-       <aside className="">
-      <TooltipProvider>
-        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-          <Link
-            href="#"
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-          >
-            <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-          
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Home className="h-5 w-5" />
-                <span className="sr-only">Dashboard</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Dashboard</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <GitPullRequest className="h-5 w-5" />
-                <span className="sr-only">Requests</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Requests</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Package className="h-5 w-5" />
-                <span className="sr-only">Assets</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Assets</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Users2 className="h-5 w-5" />
-                <span className="sr-only">Users</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Users</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LineChart className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
-          </Tooltip>
-        </nav>
-        </TooltipProvider>
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
-          </Tooltip>
-          </TooltipProvider>
-        </nav>
-      </aside>
-    </div>)
+interface SidebarProps {
+  className?: string;
 }
 
-export default Sidebar
+const Sidebar = ({ className }: SidebarProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
 
+  const onNavigate = (url: string) => {
+    return router.push(url);
+  };
+
+  const routes = [
+    {
+      icon: Home,
+      href: "/",
+      label: "Home",
+    },
+    {
+      icon: GitPullRequest,
+      href: "/requests",
+      label: "Requests",
+    },
+    {
+      icon: Package,
+      href: "/assets",
+      label: "Assets",
+    },
+    {
+      icon: Users2,
+      href: "/users",
+      label: "Users",
+    },
+    {
+      icon: LineChart,
+      href: "/analytics",
+      label: "Analytics",
+    },
+    {
+      icon: Settings,
+      href: "/settings",
+      label: "Settings",
+    },
+  ];
+
+  return (
+    <div className={`space-y-4 flex flex-col h-full text-primary bg-secondary ${className}`}>
+      <aside>
+        <TooltipProvider>
+          <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+            {routes.map((route) => (
+              <Tooltip key={route.href}>
+                <TooltipTrigger asChild>
+                  <Link href={route.href} className={`group flex h-9 w-9 shrink-0 items-center justify-center
+                   gap-2 rounded-full ${pathname === route.href ? 'bg-primary text-primary-foreground' : 'bg-secondary text-muted-foreground'} text-lg font-semibold md:h-8 md:w-8 md:text-base`}>
+                    <route.icon className="h-5 w-5" />
+                    <span className="sr-only">{route.label}</span>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="right">{route.label}</TooltipContent>
+              </Tooltip>
+            ))}
+          </nav>
+        </TooltipProvider>
+      </aside>
+    </div>
+  );
+};
+
+export default Sidebar;

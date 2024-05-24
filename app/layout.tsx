@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar/nav";
+import Navbar from "@/components/navbar/Navbar";
 import { cn } from "@/lib/utils";
 import  Sidebar  from "@/components/sidebar";
 
@@ -24,9 +24,9 @@ export default function RootLayout({
         <div className="main">
           <div className="gradient"></div>
         </div>
-        <main className="relative z-10 flex flex-col">
-          <Navbar className="fixed" />
-          <div className="flex flex-col w-full">{children}</div>
+        <main className="relative z-10">
+          <Navbar  />
+          {children}
         </main>
       </body>
     </html>

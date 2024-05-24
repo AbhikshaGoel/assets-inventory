@@ -23,23 +23,11 @@ interface NavbarProps {
     className?: string;
 }
 const Navbar = ({ className }: NavbarProps) => {
-    const router = useRouter();
-    const [darkMode, setDarkMode] = useState(false);
-
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-        if (!darkMode) {
-            document.documentElement.classList.add("dark");
-            window.localStorage.setItem("isDarkMode", "true");
-        } else {
-            document.documentElement.classList.remove("dark");
-            window.localStorage.removeItem("isDarkMode");
-        }
-    };
+ 
 
     return (
-        <header className={`navbar ${className} sticky top-0 z-30 flex h-20 items-center 
-        gap-4 border-b bg-background px-4 py-2 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6`}>
+        <header className="fixed top-0 z-30 flex  
+        gap-4 border-b bg-background px-4 py-2 w-full h-auto ">
                   {/* className=" dark:bg-slate-700/70  bg-opacity-0 backdrop-filter backdrop-blur-sm flex flex-row justify-between w-full p-2 py-4 z-10 lg:px-8 shadow-sm border-b-[1px] border-slate-900/10 lg:border-0 dark:border-slate-300/10"> */}
 
 

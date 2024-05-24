@@ -82,138 +82,16 @@ import {
 export function Dashboard() {
   return (
     <div className="flex flex-col bg-muted/40">
-      <div className="flex flex-col sm:gap-4 sm:py-4">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background sm:static sm:bg-transparent">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
-                <PanelLeft className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs">
-              <nav className="grid gap-6 text-lg font-medium">
-              
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  <Home className="h-5 w-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  Orders
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Products
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  <Users2 className="h-5 w-5" />
-                  Customers
-                </Link>
-                <Link
-                  href="#"
-                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-                >
-                  <LineChart className="h-5 w-5" />
-                  Settings
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
-          {/**Here come the main Header My Assets */}
-          
-          
-        </header>
-
-
-
-
-    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-gradient-to-r from-[#4338CA] to-[#6D28D9] lg:block dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]">
-        <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="flex h-[60px] items-center border-b px-6">
-            <Link className="flex items-center gap-2 font-semibold text-white" href="#">
-              <Package2Icon className="h-6 w-6" />
-              <span className="">IT Asset Management</span>
-            </Link>
-            <Button className="ml-auto h-8 w-8 text-white" size="icon" variant="outline">
-              <BellIcon className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-            </Button>
-          </div>
-          <div className="flex-1 overflow-auto py-2">
-            <nav className="grid items-start px-4 text-sm font-medium">
-              <Link
-                className="flex items-center gap-3 rounded-lg bg-[#6D28D9] px-3 py-2 text-white transition-all hover:bg-[#4338CA]"
-                href="#"
-              >
-                <HomeIcon className="h-4 w-4" />
-                Dashboard
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-white transition-all hover:bg-[#4338CA]"
-                href="#"
-              >
-                <PackageIcon className="h-4 w-4" />
-                Assets
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-white transition-all hover:bg-[#4338CA]"
-                href="#"
-              >
-                <UsersIcon className="h-4 w-4" />
-                Locations
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-white transition-all hover:bg-[#4338CA]"
-                href="#"
-              >
-                <LineChartIcon className="h-4 w-4" />
-                Reports
-              </Link>
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-white transition-all hover:bg-[#4338CA]"
-                href="#"
-              >
-                <SettingsIcon className="h-4 w-4" />
-                Settings
-              </Link>
-            </nav>
-          </div>
-          <div className="mt-auto p-4">
-            <Card className="bg-gradient-to-r from-[#4338CA] to-[#6D28D9] text-white">
-              <CardHeader className="pb-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>Unlock all features and get unlimited access to our support team</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full bg-white text-[#4338CA] hover:bg-gray-200" size="sm">
-                  Upgrade
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col">
-        <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gradient-to-r from-[#4338CA] to-[#6D28D9] px-6 text-white dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]">
-          <h1 className="text-lg font-semibold md:text-xl">IT Asset Management</h1>
-          <Button className="ml-auto text-white hover:bg-white hover:text-[#4338CA]" variant="outline">
+    <header className="flex h-14 items-center gap-4 border-b bg-gradient-to-r from-[#4338CA] to-[#6D28D9] 
+    px-6 text-white dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]">
+          <h1 className="text-lg font-semibold md:text-xl">My Assets</h1>
+          <Button className="hover:bg-white hover:text-black" variant="default">
             Request Asset
           </Button>
         </header>
+      
+      <div className="flex">
+        
         <main className="flex-1 p-4 md:p-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -478,8 +356,7 @@ export function Dashboard() {
 
       </div>
     </div>
-    </div>
-    </div>
+  
   )
 }
 

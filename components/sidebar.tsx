@@ -60,16 +60,18 @@ const Sidebar = ({ className }: SidebarProps) => {
             {routes.map((route) => (
               <Tooltip key={route.href}>
                 <TooltipTrigger asChild>
-                  <Link href={route.href} className={`group flex h-9 w-9 shrink-0 items-center justify-center
-                   gap-2 rounded-full ${pathname === route.href ? 'bg-primary text-primary-foreground' : 'bg-secondary text-muted-foreground'} text-lg font-semibold md:h-8 md:w-8 md:text-base`}>
+                  <Link href={route.href} className={`group flex h-9 w-36 shrink-0 items-center px-2
+                   gap-2 rounded-full ${pathname === route.href ? 'bg-primary text-primary-foreground font-semibold' : 'bg-secondary text-muted-foreground'} text-lg  md:h-8 md:w-36 md:text-base`}>
                     <route.icon className="h-5 w-5" />
-                    <span className="sr-only">{route.label}</span>
+                    <span className="px-2">{route.label}</span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right">{route.label}</TooltipContent>
               </Tooltip>
             ))}
           </nav>
+
+          
         </TooltipProvider>
       </aside>
     </div>

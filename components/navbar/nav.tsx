@@ -38,8 +38,8 @@ const Navbar = ({ className }: NavbarProps) => {
     };
 
     return (
-        <header className="sticky top-0 z-30 flex h-20 items-center 
-        gap-4 border-b bg-background px-4 py-2 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className={`navbar ${className} sticky top-0 z-30 flex h-20 items-center 
+        gap-4 border-b bg-background px-4 py-2 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6`}>
                   {/* className=" dark:bg-slate-700/70  bg-opacity-0 backdrop-filter backdrop-blur-sm flex flex-row justify-between w-full p-2 py-4 z-10 lg:px-8 shadow-sm border-b-[1px] border-slate-900/10 lg:border-0 dark:border-slate-300/10"> */}
 
 

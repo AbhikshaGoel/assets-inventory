@@ -24,17 +24,9 @@ export default function RootLayout({
         <div className="main">
           <div className="gradient"></div>
         </div>
-
-        <main className=" relative z-10 flex flex-col mx-auto">
-          
-          <Navbar className="hide-on-print" />
-          <div className="hidden md:flex mt-16 w-20 flex-col fixed inset-y-0 ">
-            <Sidebar/>
-          </div>
-
-         
-
-          {children}
+        <main className="relative z-10 flex flex-col">
+          <Navbar className="fixed" />
+          <div className="flex flex-col w-full">{children}</div>
         </main>
       </body>
     </html>

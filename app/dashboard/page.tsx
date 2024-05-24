@@ -93,11 +93,11 @@ export function Dashboard() {
       <div className="flex">
         
         <main className="flex-1 p-4 ">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">PCs</CardTitle>
-                <ComputerIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                <ComputerIcon className="w-10 h-10 text-gray-500 dark:text-gray-400" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-[#4338CA]">850</div>

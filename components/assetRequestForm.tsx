@@ -1,92 +1,114 @@
 import React from "react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/BYBZaA3KIDa
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
   SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+  Select,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-interface AssetRequestProps {
-  asset_category_id: number;
-}
-
-const formSchema = z.object({
-  asset_id: z.string().min(0).default(""),
-  asset_name: z.string().min(1),
-});
-
-const AssetRequestForm = ({ asset_category_id }: AssetRequestProps) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      asset_id: "",
-      asset_name: "",
-    },
-  });
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    // Handle form submission here
-    console.log("Form data:", data);
-  };
-
+export default function Component() {
   return (
-    <div className="h-full p-2 space-y-2 max-w-3xl mx-auto">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormItem>
-            <FormLabel>Asset ID</FormLabel>
-            <FormField
-              control={form.control}
-              name="asset_id"
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  className="w-full border rounded-md py-2 px-3"
-                />
-              )}
-            />
-            <FormMessage />
-          </FormItem>
-          <FormItem>
-            <FormLabel>Asset Name</FormLabel>
-            <FormField
-              control={form.control}
-              name="asset_name"
-              render={({ field }) => (
-                <input
-                  type="text"
-                  {...field}
-                  className="w-full border rounded-md py-2 px-3"
-                />
-              )}
-            />
-            <FormMessage />
-          </FormItem>
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-            >
-              Submit
-            </Button>
+    <div className="mt-16 mx-auto max-w-md space-y-6">
+      <div className="space-y-2 text-center">
+        <h1 className="text-3xl font-bold">Request an Asset</h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          Fill out the form to request a new laptop, printer, or other asset.
+        </p>
+      </div>
+      <form className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" placeholder="Enter your name" required />
           </div>
-        </form>
-      </Form>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              placeholder="Enter your email"
+              required
+              type="email"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="asset-type">Asset Type</Label>
+          <Select defaultValue="other">
+            <SelectTrigger>
+              <SelectValue placeholder="Select asset type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="laptop">Laptop</SelectItem>
+              <SelectItem value="printer">Printer</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="laptop">Laptop</Label>
+          <Select defaultValue="macbook-pro">
+            <SelectTrigger>
+              <SelectValue placeholder="Select laptop model" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="macbook-pro">MacBook Pro</SelectItem>
+              <SelectItem value="macbook-air">MacBook Air</SelectItem>
+              <SelectItem value="dell-xps">Dell XPS</SelectItem>
+              <SelectItem value="hp-spectre">HP Spectre</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="printer">Printer</Label>
+          <Select defaultValue="hp-laserjet">
+            <SelectTrigger>
+              <SelectValue placeholder="Select printer model" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="hp-laserjet">HP LaserJet</SelectItem>
+              <SelectItem value="canon-pixma">Canon PIXMA</SelectItem>
+              <SelectItem value="epson-ecotank">Epson EcoTank</SelectItem>
+              <SelectItem value="brother-mfc">Brother MFC</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="gradient">Gradient Color</Label>
+          <Select defaultValue="blue-to-purple">
+            <SelectTrigger>
+              <SelectValue placeholder="Select gradient color" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="blue-to-purple">Blue to Purple</SelectItem>
+              <SelectItem value="green-to-teal">Green to Teal</SelectItem>
+              <SelectItem value="red-to-orange">Red to Orange</SelectItem>
+              <SelectItem value="pink-to-red">Pink to Red</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="details">Additional Details</Label>
+          <Textarea
+            id="details"
+            placeholder="Enter any additional details"
+            rows={4}
+          />
+        </div>
+        <Button className="w-full" type="submit">
+          Submit Request
+        </Button>
+      </form>
     </div>
   );
-};
-
-export default AssetRequestForm;
+}

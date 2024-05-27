@@ -1,56 +1,17 @@
-"use client"
-import Image from "next/image"
-import Link from "next/link"
+"use client";
 import {
-  ChevronLeft,
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
-  Upload,
-  Users2,
-  GitPullRequest,
-  Package2Icon,
-  BellIcon,
-  HomeIcon,
-  UsersIcon,
-  PackageIcon,
-  LineChartIcon,
-  SettingsIcon,
-  CatIcon,
-  GaugeIcon,
   DeleteIcon,
   Trash2Icon,
   ComputerIcon,
   LaptopIcon,
   ServerIcon,
   PrinterIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,17 +19,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/components/ui/select";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Table,
   TableBody,
@@ -76,22 +37,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-
+} from "@/components/ui/table";
 
 export function Dashboard() {
   return (
     <div className="flex flex-col bg-muted/40">
-    <header className="flex h-14 items-center gap-4 border-b bg-gradient-to-r from-[#4338CA] to-[#6D28D9] 
-    px-6 text-white dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]">
-          <h1 className="text-lg font-semibold md:text-xl">My Assets</h1>
-          <Button className="hover:bg-white hover:text-black" variant="default">
-            Request Asset
-          </Button>
-        </header>
-      
+      <header
+        className="flex h-14 items-center gap-4 border-b bg-gradient-to-r from-[#4338CA] to-[#6D28D9] 
+    px-6 text-white dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]"
+      >
+        <h1 className="text-lg font-semibold md:text-xl">My Assets</h1>
+        <Button className="hover:bg-white hover:text-black" variant="default">
+          Request Asset
+        </Button>
+      </header>
+
       <div className="flex">
-        
         <main className="flex-1 p-4 ">
           <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-6">
             <Card>
@@ -101,7 +62,9 @@ export function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-[#4338CA]">850</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Issued: 750 | Requested: 100</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Issued: 750 | Requested: 100
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -111,7 +74,9 @@ export function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-[#6D28D9]">120</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Issued: 100 | Requested: 20</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Issued: 100 | Requested: 20
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -121,7 +86,9 @@ export function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-[#4338CA]">650</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Issued: 600 | Requested: 50</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Issued: 600 | Requested: 50
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -131,7 +98,9 @@ export function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-[#6D28D9]">25</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Issued: 20 | Requested: 5</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Issued: 20 | Requested: 5
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -353,10 +322,7 @@ export function Dashboard() {
             </Card>
           </div>
         </main>
-
       </div>
     </div>
-  
-  )
+  );
 }
-

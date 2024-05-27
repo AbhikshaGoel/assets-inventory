@@ -3,12 +3,25 @@
  * @see https://v0.dev/t/9K93q1JhldB
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  CardTitle,
+  CardDescription,
+  CardHeader,
+  CardContent,
+  Card,
+} from "@/components/ui/card";
 
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import {
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableBody,
+  Table,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export default function Component() {
   return (
@@ -29,7 +42,7 @@ export default function Component() {
             <nav className="grid items-start px-4 text-sm font-medium">
               <Link
                 className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
-                href="#"
+                href="/dashboard"
               >
                 <HomeIcon className="h-4 w-4" />
                 Dashboard
@@ -68,7 +81,10 @@ export default function Component() {
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>Unlock all features and get unlimited access to our support team</CardDescription>
+                <CardDescription>
+                  Unlock all features and get unlimited access to our support
+                  team
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button className="w-full" size="sm">
@@ -81,23 +97,31 @@ export default function Component() {
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
-          <h1 className="text-lg font-semibold md:text-xl">IT Asset Management</h1>
+          <h1 className="text-lg font-semibold md:text-xl">
+            IT Asset Management
+          </h1>
         </header>
         <main className="flex-1 p-4 md:p-6">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Assets</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Total Assets
+                </CardTitle>
                 <PackageIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2,345</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">+5.2% from last month</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  +5.2% from last month
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Assets by Category</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Assets by Category
+                </CardTitle>
                 <CatIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </CardHeader>
               <CardContent>
@@ -108,7 +132,9 @@ export default function Component() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Assets by Status</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Assets by Status
+                </CardTitle>
                 <GaugeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
               </CardHeader>
               <CardContent>
@@ -218,7 +244,7 @@ export default function Component() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
 // function BarChart(props:any) {
@@ -274,8 +300,7 @@ export default function Component() {
 //   )
 // }
 
-
-function BellIcon(props:any) {
+function BellIcon(props: any) {
   return (
     <svg
       {...props}
@@ -292,11 +317,10 @@ function BellIcon(props:any) {
       <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
       <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
     </svg>
-  )
+  );
 }
 
-
-function CatIcon(props:any) {
+function CatIcon(props: any) {
   return (
     <svg
       {...props}
@@ -315,11 +339,10 @@ function CatIcon(props:any) {
       <path d="M16 14v.5" />
       <path d="M11.25 16.25h1.5L12 17l-.75-.75Z" />
     </svg>
-  )
+  );
 }
 
-
-function DeleteIcon(props:any) {
+function DeleteIcon(props: any) {
   return (
     <svg
       {...props}
@@ -337,11 +360,10 @@ function DeleteIcon(props:any) {
       <line x1="18" x2="12" y1="9" y2="15" />
       <line x1="12" x2="18" y1="9" y2="15" />
     </svg>
-  )
+  );
 }
 
-
-function GaugeIcon(props:any) {
+function GaugeIcon(props: any) {
   return (
     <svg
       {...props}
@@ -358,11 +380,10 @@ function GaugeIcon(props:any) {
       <path d="m12 14 4-4" />
       <path d="M3.34 19a10 10 0 1 1 17.32 0" />
     </svg>
-  )
+  );
 }
 
-
-function HomeIcon(props:any) {
+function HomeIcon(props: any) {
   return (
     <svg
       {...props}
@@ -379,11 +400,10 @@ function HomeIcon(props:any) {
       <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
-  )
+  );
 }
 
-
-function LineChartIcon(props:any) {
+function LineChartIcon(props: any) {
   return (
     <svg
       {...props}
@@ -400,11 +420,10 @@ function LineChartIcon(props:any) {
       <path d="M3 3v18h18" />
       <path d="m19 9-5 5-4-4-3 3" />
     </svg>
-  )
+  );
 }
 
-
-function Package2Icon(props:any) {
+function Package2Icon(props: any) {
   return (
     <svg
       {...props}
@@ -422,11 +441,10 @@ function Package2Icon(props:any) {
       <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
       <path d="M12 3v6" />
     </svg>
-  )
+  );
 }
 
-
-function PackageIcon(props:any) {
+function PackageIcon(props: any) {
   return (
     <svg
       {...props}
@@ -445,9 +463,8 @@ function PackageIcon(props:any) {
       <path d="m3.3 7 8.7 5 8.7-5" />
       <path d="M12 22V12" />
     </svg>
-  )
+  );
 }
-
 
 // function PieChart(props:any) {
 //   return (
@@ -495,8 +512,7 @@ function PackageIcon(props:any) {
 //   )
 // }
 
-
-function SettingsIcon(props:any) {
+function SettingsIcon(props: any) {
   return (
     <svg
       {...props}
@@ -513,11 +529,10 @@ function SettingsIcon(props:any) {
       <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
-  )
+  );
 }
 
-
-function Trash2Icon(props:any) {
+function Trash2Icon(props: any) {
   return (
     <svg
       {...props}
@@ -537,11 +552,10 @@ function Trash2Icon(props:any) {
       <line x1="10" x2="10" y1="11" y2="17" />
       <line x1="14" x2="14" y1="11" y2="17" />
     </svg>
-  )
+  );
 }
 
-
-function UsersIcon(props:any) {
+function UsersIcon(props: any) {
   return (
     <svg
       {...props}
@@ -560,5 +574,5 @@ function UsersIcon(props:any) {
       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
-  )
+  );
 }

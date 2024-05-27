@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 export default function Dashboard() {
   return (
@@ -30,9 +31,11 @@ export default function Dashboard() {
     px-6 text-white dark:bg-gradient-to-r dark:from-[#4338CA] dark:to-[#6D28D9]"
       >
         <h1 className="text-lg font-semibold md:text-xl">My Assets</h1>
-        <Button className="hover:bg-white hover:text-black" variant="default">
-          Request Asset
-        </Button>
+        <Link href="/assetRequest">
+          <Button className="hover:bg-white hover:text-black" variant="default">
+            Request Asset
+          </Button>
+        </Link>
       </header>
 
       <div className="flex">

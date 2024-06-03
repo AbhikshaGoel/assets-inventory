@@ -51,11 +51,6 @@ const Sidebar = ({ className }: SidebarProps) => {
       label: "Home",
     },
     {
-      icon: GitPullRequest,
-      href: "/requests",
-      label: "Requests",
-    },
-    {
       icon: Package,
       href: "/assets",
       label: "Assets",
@@ -63,7 +58,7 @@ const Sidebar = ({ className }: SidebarProps) => {
     {
       icon:UploadCloudIcon,
       href:"/upload",
-      label:"Upload",
+      label:"Add / Upload",
     },
     {
       icon: Users2,
@@ -98,7 +93,7 @@ const Sidebar = ({ className }: SidebarProps) => {
               <Tooltip key={route.href}>
                 <TooltipTrigger asChild>
                   <Link href={route.href} className={`group flex h-9 w-44 shrink-0 items-center px-2
-                   gap-2 rounded-full ${pathname === route.href ? 'bg-primary text-primary-foreground font-semibold' : 'bg-secondary text-muted-foreground'} text-lg  md:h-8 md:w-36 md:text-base`}>
+                   gap-2 rounded-full ${pathname === route.href ? 'bg-primary text-primary-foreground font-semibold' : 'bg-secondary text-muted-foreground'} text-lg  md:h-8 md:w-44 md:text-base`}>
                     <route.icon className="h-5 w-5" />
                     <span className="px-2">{route.label}</span>
                   </Link>

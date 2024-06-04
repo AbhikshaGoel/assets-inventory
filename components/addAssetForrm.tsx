@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useSearchParams } from "next/navigation";
+//import { useSearchParams } from "next/navigation";
 import axios from 'axios';
 
 import { Button } from "@/components/ui/button";
@@ -32,12 +32,12 @@ import { useTransition, useState } from "react";
 import Link from "next/link";
 import FormError from "./form-error";
 const LoginForm = () => {
-  const urlParams = useSearchParams();
-  const callBackUrl = urlParams.get("callbackUrl");
-  const errorUrlParam =
-    urlParams.get("error") === "OAuthAccountNotLinked"
-      ? "This account is already linked to a user. Please sign in with a different account."
-      : ``;
+  //const urlParams = useSearchParams();
+  // const callBackUrl = urlParams.get("callbackUrl");
+  // const errorUrlParam =
+  //   urlParams.get("error") === "OAuthAccountNotLinked"
+  //     ? "This account is already linked to a user. Please sign in with a different account."
+  //     : ``;
 
   const [isPending, startTransition] = useTransition();
   const [isTwoFactor, setTwoFactor] = useState(false); // TODO: ADD 2FA
@@ -256,7 +256,7 @@ function onSubmit(values: z.infer<typeof LoginSchema>) {
           
         
         
-        <FormError message={error || errorUrlParam} />
+        
         <Button type="submit" className="w-full" disabled={isPending}>
           Add Asset
         </Button>

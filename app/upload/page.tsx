@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { TrashIcon, UploadIcon } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
  "lucide-react";
 
 
@@ -27,8 +28,8 @@ export default function Home() {
         <p className=" text-base text-white/90 dark:text-gray-400">
             Fill out the form to request a new laptop, printer, or other asset. Or Upload the CSV file
         </p>
-        </div>
-      <div className="p-4 space-4 flex">
+    </div>
+    <div className="p-4 space-4 flex">
         <div className="w-1/2 space-y-4">
             <div className="w-full">
                 <h1 className="text-xl font-bold mb-2">Add Asset</h1>
@@ -36,6 +37,7 @@ export default function Home() {
             </div>
             <AddAssetForm />
         </div>
+        <Separator className="bg-blue-600" orientation="vertical"></Separator>
         <div className="w-1/2 ">
             <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div className="space-y-6">

@@ -1,12 +1,21 @@
-import React from "react";
+"use client";
 
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/BYBZaA3KIDa
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useSearchParams } from "next/navigation";
+import axios from 'axios';
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   SelectValue,
   SelectTrigger,
@@ -14,91 +23,245 @@ import {
   SelectContent,
   Select,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "./ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { LoginSchema } from "@/schemas";
 
-export default function AddAssetForm() {
-  return (
-    <div className="px-2 space-y-6">
-      
-        <div className=" ">
-      <div className="flex flex-col items-center justify-center space-y-6">
-       
-        <Card className="w-full space-y-4 gap-y-4">
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="asset-type">Asset Type</Label>
-                <Select defaultValue="pc">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select asset type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pc">PC</SelectItem>
-                    <SelectItem value="printer">Printer</SelectItem>
-                    <SelectItem value="monitor">Monitor</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="serial-number">Serial Number</Label>
-                <Input id="serial-number" type="text" placeholder="Enter serial number" />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="user-name">User Name</Label>
-                <Input id="user-name" type="text" placeholder="Enter user name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="user-email">User Email</Label>
-                <Input id="user-email" type="email" placeholder="Enter user email" />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="user-name">User Name</Label>
-                <Input id="user-name" type="text" placeholder="Enter user name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="user-email">User Email</Label>
-                <Input id="user-email" type="email" placeholder="Enter user email" />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="user-name">User Name</Label>
-                <Input id="user-name" type="text" placeholder="Enter user name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="user-email">User Email</Label>
-                <Input id="user-email" type="email" placeholder="Enter user email" />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="user-name">User Name</Label>
-                <Input id="user-name" type="text" placeholder="Enter user name" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="user-email">User Email</Label>
-                <Input id="user-email" type="email" placeholder="Enter user email" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea id="description" rows={3} placeholder="Enter a description" />
-            </div>
-            <div className="flex justify-end">
-              <Button type="submit">Save Asset</Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-    
-    </div>
-  );
+import { useTransition, useState } from "react";
+
+import Link from "next/link";
+import FormError from "./form-error";
+const LoginForm = () => {
+  const urlParams = useSearchParams();
+  const callBackUrl = urlParams.get("callbackUrl");
+  const errorUrlParam =
+    urlParams.get("error") === "OAuthAccountNotLinked"
+      ? "This account is already linked to a user. Please sign in with a different account."
+      : ``;
+
+  const [isPending, startTransition] = useTransition();
+  const [isTwoFactor, setTwoFactor] = useState(false); // TODO: ADD 2FA
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  // function onSubmit() {
+  //   console.log("login");
+  // }
+  // function onSubmit(values: z.infer<typeof LoginSchema>) {
+  //   setError("");
+  //   //setSuccess("");
+  //   startTransition(() => {
+  //     login(values, callBackUrl)
+  //       .then((data) => {
+  //         if (data?.error) {
+  //           form.reset();
+  //           setError(data.error);
+  //         }
+  //         // if (data?.success) {
+  //         //   // TODO: ADD 2FA
+  //         //   form.reset();
+  //         //   setSuccess(data?.success);
+  //         // }
+  //       })
+  //       .catch((err) => {
+  //         setError("Something went wrong.");
+  //       });
+  //   });
+  // }
+  
+
+function onSubmit(values: z.infer<typeof LoginSchema>) {
+  setError("");
+  //setSuccess("");
+  // startTransition(() => {
+  //   axios.post('/api/login', values)
+  //     .then((response:any) => {
+  //       const data = response.data;
+  //       if (data?.error) {
+  //         form.reset(); // Reset form on error
+  //         setError(data.error);
+  //       } else {
+  //         // Handle successful login
+  //         // Uncomment this section and implement the logic as needed
+  //         // form.reset(); // Optionally reset the form
+  //         // setSuccess("Login successful");
+  //         // Redirect user, update UI, etc.
+  //       }
+  //     })
+  //     .catch((err:any) => {
+  //       // Handle other errors (e.g., network errors)
+  //       setError("Something went wrong.");
+  //     });
+  // });
 }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        
+          <div className="grid grid-cols-2 space-x-4">
+            <div className="space-y-2">
+              <Label htmlFor="asset-type">Asset Type</Label>
+              <Select defaultValue="other">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select asset type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="laptop">Laptop</SelectItem>
+                  <SelectItem value="printer">Printer</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asset Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Asset Name"
+                      {...field}
+                      type="string"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-2 space-x-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asset Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Asset Name"
+                      {...field}
+                      type="string"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      type="password"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-2 space-x-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asset Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Asset Name"
+                      {...field}
+                      type="string"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      type="password"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 space-x-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Asset Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Asset Name"
+                      {...field}
+                      type="string"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="******"
+                      {...field}
+                      type="password"
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+        
+        
+        <FormError message={error || errorUrlParam} />
+        <Button type="submit" className="w-full" disabled={isPending}>
+          Add Asset
+        </Button>
+      </form>
+    </Form>
+  );
+};
+export default LoginForm;

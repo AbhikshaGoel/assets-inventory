@@ -12,6 +12,16 @@ export const LoginSchema = zod.object({
   ),
 });
 
+
+export const AssetSchema = zod.object({
+  
+    categoryMasterId:zod.number(),
+    categoryName: zod
+    .string({
+      invalid_type_error: "Category must be a selected", // first one does not have message prop
+    })
+});
+
 const DesktopComputingSchema = zod.object({
   category: zod.literal("Desktop Computing"),
   subcategory: zod.enum(["Desktops", "Laptops", "Peripherals"]),

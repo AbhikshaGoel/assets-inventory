@@ -41,55 +41,44 @@ import { AssetSchema } from "@/schemas";
 
 
 
-export default function Home() {
-
-
-    
-    
+export default function Home() {  
     const [error, setError] = useState<string>("Something went wrong");
+    const [categoryData, setCategoryData] = useState([]);
+    const [subcategoryData, setSubCategoryData] = useState([]);
+    const [locationData, setLocationData] = useState([]);
+    const [manufacturerData, setManufacturerData] = useState([]);
+
+    const [assetData, setAssetData] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState<number | null>(null); // Store the selected country ID
 
-    
 
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [locationResponse, categoryResponse, assetResponse, subcategoryResponse, manufacturerResponse] = await Promise.all([
+          axios.get("http://10.14.84.34:3001/api/locationmaster"),
+          axios.get("http://10.14.84.34:3001/api/categorymaster"),
+          axios.get("http://10.14.84.34:3001/api/assetmodel"),
+          axios.get("http://10.14.84.34:3001/api/subcategorymaster"),
+          axios.get("http://10.14.84.34:3001/api/manufacturer")
+        ]);
 
+        setLocationData(locationResponse.data);
+        setCategoryData(categoryResponse.data);
+        setAssetData(assetResponse.data);
+        setSubCategoryData(subcategoryResponse.data);
+        setManufacturerData(manufacturerResponse.data);
+        //console.log("gdf",categoryResponse.data);
+        //setLoading(false);
+      } catch (error) {
+        setError("Something went wrong");
+        console.error("Error fetching data", error);
+        //setLoading(false);
+      }
+    };
 
-// useEffect(() => {
-//     if (selectedCountry !== null) {
-//       axios
-//         .get(`/categorymaster/${selectedCountry}`)
-//         .then((response) => {
-//           console.log(response);
-//           // Populate the form fields with the fetched data
-//           const countryData = response.data;
-//           form.setValue("country_id", countryData.Country_Id.toString());
-//           form.setValue("country_name", countryData.COUNTRY_NAME);
-//           form.setValue(
-//             "country_flag_location",
-//             countryData.COUNTRY_FLAG_LOCATION
-//           );
-//           form.setValue(
-//             "country_map_location",
-//             countryData.COUNTRY_MAP_LOCATION
-//           );
-//         })
-//         .catch((error) => {
-//           console.error("Error posting data:", error);
-//         });
-//     }
-//   }, [form, selectedCountry]);
-
-  useEffect(() => {
-    axios.get("http://10.14.84.38:9001/api/fetchlocation")
-        .then((response) => {
-            const data = response.data;
-            
-            console.log("client data", data); 
-        })
-        .catch((error) => {
-            setError("Something went wrong");
-            console.error("Error fetching category data", error);
-        });
-}, []);
+    fetchData();
+  }, []);
 
   
   return (
@@ -102,50 +91,12 @@ export default function Home() {
     <div className="p-4 space-4 flex">
         <div className="w-1/2 space-y-4">
             
-    <div className="h-full p-2 space-y-2 max-w-3xl mx-auto">
-      <AddAssetForm categoryData={[]} subcategoryData={[]} assetData={[]} locationData={[]}/>
-    </div>
+            <div className="h-full p-2 space-y-2 max-w-3xl mx-auto">
+            <AddAssetForm categoryData={categoryData} subcategoryData={subcategoryData} assetData={assetData} locationData={locationData} manufacturerData={manufacturerData}/>
+            </div>
  
         </div>
-        <Separator className="bg-blue-600" orientation="vertical"></Separator>
-        <div className="w-1/2 ">
-            <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <div className="space-y-6">
-                    <div className="text-center">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-50">Upload Assets</h1>
-                        <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400">
-                            Add files to your asset library.
-                        </p>
-                    </div>
-                <div className="bg-white dark:bg-gray-900 shadow sm:rounded-lg">
-                    <div className="px-4 py-5 sm:p-6">
-                        <form className="space-y-6">
-                            <div>
-                           
-                                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                <div className="space-y-1 text-center">
-                                    <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-                                    <div className="flex text-sm justify-center text-center text-gray-600 dark:text-gray-400">
-                                    <label className="relative cursor-pointer bg-white dark:bg-gray-900 rounded-md 
-                                        font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file" name="file" type="file" className="sr-only" />
-                                    </label>
-                                    </div>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">CSV file up to 10MB</p>
-                                </div>
-                            </div>
-                        </div>
-                        <FormError message={error} />
-                        <Button type="submit" className="w-full">
-                            Upload Assets
-                        </Button>
-                        </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
       </div>
     </main>
   );

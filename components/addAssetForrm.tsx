@@ -50,13 +50,20 @@ interface AssetFormProps{
     manufacturerName: string;
   }[];
 }
-
-const LoginForm = ({categoryData,subcategoryData,assetData,locationData, manufacturerData}:AssetFormProps) => {
+const assetSchema = z.object(
+  {
+    assetModelId: z.number(),
+    locationId:z.number(),
+    
+  }
+)
+const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufacturerData}:AssetFormProps) => {
   //console.log("data",categoryData);
   const [isPending, startTransition] = useTransition();
   const [isTwoFactor, setTwoFactor] = useState(false); // TODO: ADD 2FA
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Store the selected country ID
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -65,29 +72,22 @@ const LoginForm = ({categoryData,subcategoryData,assetData,locationData, manufac
     },
   });
 
-    const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Check if all necessary data is loaded
-  // useEffect(() => {
-  //   if (categoryData && subcategoryData && assetData && locationData && manufacturerData) {
-  //     //console.log("category", categoryData)
-  //     setDataLoaded(true);
-  //   }
-  // }, [categoryData, subcategoryData, assetData, locationData, manufacturerData]);
-
-  // Render the form only when data is loaded
-  // if (!dataLoaded) {
-  //   return <p>Loading...</p>;
-  // }
-
-
-  function onSubmit(values: z.infer<typeof LoginSchema>) {
+   const handleCategorySelect = (selectedId: string) => {
+    
+    // This function will be called when a country is selected or changed
+    console.log("Selected Category ID:", selectedId);
+    //setIsEditMode(true); // Enter edit mode when a country is selected
+    setSelectedCategory(parseInt(selectedId)); // Store the selected country ID as a number
+    // ... (your additional actions here if needed)
+  };
+  function onSubmit(values: z.infer<typeof assetSchema>) {
     setError("");
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(()=>{})} className="space-y-5">
         <div className="grid grid-cols-2 space-x-4">
           <FormField
             control={form.control}
@@ -96,12 +96,16 @@ const LoginForm = ({categoryData,subcategoryData,assetData,locationData, manufac
               <FormItem>
                 <FormLabel>Asset Category</FormLabel>
                 <FormControl>
-                  <Select {...field}>
+                  <Select {...field} onValueChange={(value) => {
+                            field.onChange(value);
+                            handleCategorySelect(value);
+                          }}>
                     <SelectTrigger>
                       <SelectValue
-                                defaultValue={field.value}
-                                placeholder="Select Asset"
-                              />                    </SelectTrigger>
+                        defaultValue={field.value}
+                        placeholder="Select Asset"
+                      />
+                     </SelectTrigger>
                     <SelectContent>
                       {categoryData?.map((category) => (
                               <SelectItem
@@ -128,4 +132,4 @@ const LoginForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   );
 };
 
-export default LoginForm;
+export default AssetForm;

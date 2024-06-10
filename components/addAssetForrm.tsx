@@ -26,110 +26,309 @@ import { LoginSchema } from "@/schemas";
 
 import { useTransition, useState, useEffect } from "react";
 interface AssetFormProps{
-  categoryData?:{
+  categoryData:{
     categoryId: number;
     categoryName: string;
   }[];
-  subcategoryData?:{
+  subcategoryData:{
     categoryId: number;
     categoryName: string;
     categoryMasterId: number;
   }[];
-  assetData?:{
+  assetData:{
     assetModelId: number;
     manufacturerId: number;
     subcategoryId: number;
     assetModelName: string;
   }[];
-  locationData?:{
+  locationData:{
     locationId: number;
     locationName: string;
   }[];
-  manufacturerData?:{
+  manufacturerData:{
     manufacturerId: number;
     manufacturerName: string;
   }[];
 }
-const assetSchema = z.object(
-  {
-    assetModelId: z.number(),
-    locationId:z.number(),
-    
+
+
+// import * as z from "zod"
+// import axios from "axios"
+// import { useState } from "react"
+// import { zodResolver } from "@hookform/resolvers/zod"
+// import { useForm } from "react-hook-form"
+
+import { Trash } from "lucide-react"
+
+import { useParams, useRouter } from "next/navigation"
+
+// import { Input } from "@/components/ui/input"
+// import { Button } from "@/components/ui/button"
+// import {
+//   Form,
+//   FormControl,
+//   FormDescription,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form"
+import { Separator } from "@/components/ui/separator"
+import { Heading } from "@/components/ui/heading"
+
+//import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+import { Checkbox } from "@/components/ui/checkbox"
+
+const formSchema = z.object({
+  name: z.string().min(1),
+  images: z.object({ url: z.string() }).array(),
+  price: z.coerce.number().min(1),
+  categoryId: z.string().min(1),
+  colorId: z.string().min(1),
+  sizeId: z.string().min(1),
+  isFeatured: z.boolean().default(false).optional(),
+  isArchived: z.boolean().default(false).optional()
+});
+
+type ProductFormValues = z.infer<typeof formSchema>
+
+
+
+export const AddAssetForm: React.FC<AssetFormProps> = ({
+  subcategoryData,
+  categoryData,
+  locationData,
+  manufacturerData
+}) => {
+  const params = useParams();
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const title = categoryData ? 'Edit product' : 'Create product';
+  const description = categoryData ? 'Edit a product.' : 'Add a new product';
+  const toastMessage = categoryData ? 'Product updated.' : 'Product created.';
+  const action = categoryData ? 'Save changes' : 'Create';
+
+  const defaultValues = categoryData ? {
+    ...categoryData,
+    price: parseFloat(String(categoryData?.price)),
+  } : {
+    name: '',
+    images: [],
+    price: 0,
+    categoryId: '',
+    colorId: '',
+    sizeId: '',
+    isFeatured: false,
+    isArchived: false,
   }
-)
-const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufacturerData}:AssetFormProps) => {
-  //console.log("data",categoryData);
-  const [isPending, startTransition] = useTransition();
-  const [isTwoFactor, setTwoFactor] = useState(false); // TODO: ADD 2FA
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Store the selected country ID
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues
   });
 
-
-   const handleCategorySelect = (selectedId: string) => {
-    
-    // This function will be called when a country is selected or changed
-    console.log("Selected Category ID:", selectedId);
-    //setIsEditMode(true); // Enter edit mode when a country is selected
-    setSelectedCategory(parseInt(selectedId)); // Store the selected country ID as a number
-    // ... (your additional actions here if needed)
+  const onSubmit = async (data: ProductFormValues) => {
+    try {
+      setLoading(true);
+    //   if (initialData) {
+    //     await axios.patch(`/api/${params.storeId}/products/${params.productId}`, data);
+    //   } else {
+    //     await axios.post(`/api/${params.storeId}/products`, data);
+    //   }
+    //   router.refresh();
+    //   router.push(`/${params.storeId}/products`);
+    //   console.log(toastMessage);
+     } catch (error: any) {
+       console.log('Something went wrong.');
+     } finally {
+       setLoading(false);
+     }
   };
-  function onSubmit(values: z.infer<typeof assetSchema>) {
-    setError("");
+
+  const onDelete = async () => {
+    try {
+      setLoading(true);
+      await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+      router.refresh();
+      router.push(`/${params.storeId}/products`);
+      console.log('Product deleted.');
+    } catch (error: any) {
+      console.log('Something went wrong.');
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(()=>{})} className="space-y-5">
-        <div className="grid grid-cols-2 space-x-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Asset Category</FormLabel>
-                <FormControl>
-                  <Select {...field} onValueChange={(value) => {
-                            field.onChange(value);
-                            handleCategorySelect(value);
-                          }}>
-                    <SelectTrigger>
-                      <SelectValue
-                        defaultValue={field.value}
-                        placeholder="Select Asset"
-                      />
-                     </SelectTrigger>
+    <>
+    
+     {/* <div className="flex items-center justify-between">
+        <Heading title={title} description={description} />
+        {initialData && (
+          <Button
+            disabled={loading}
+            variant="destructive"
+            size="sm"
+            onClick={() => setOpen(true)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        )}
+      </div> */}
+      <Separator />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          
+          <div className="md:grid md:grid-cols-3 gap-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="Product name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input type="number" disabled={loading} placeholder="9.99" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
                     <SelectContent>
-                      {categoryData?.map((category) => (
-                              <SelectItem
-                                key={category.categoryId}
-                                value={category.categoryName}
-                              >
-                                {category.categoryName}
-                              </SelectItem>
-                            ))}
+                      {categoryData.map((category) => (
+                        <SelectItem key={category.categoryId} value={category.categoryId.toString()}>{category.categoryName}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* Render other form fields similarly */}
-        </div>
-        <Button type="submit" className="w-full" disabled={isPending}>
-          Add Asset
-        </Button>
-      </form>
-    </Form>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sizeId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Size</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a size" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {locationData.map((size) => (
+                        <SelectItem key={size.locationId} value={size.locationId.toString()}>{size.locationName}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="colorId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue defaultValue={field.value} placeholder="Select a color" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {manufacturerData.map((color) => (
+                        <SelectItem key={color.manufacturerId} value={color.manufacturerId.toString()}>{color.manufacturerName}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      // @ts-ignore
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Featured
+                    </FormLabel>
+                    <FormDescription>
+                      This product will appear on the home page
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isArchived"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      // @ts-ignore
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Archived
+                    </FormLabel>
+                    <FormDescription>
+                      This product will not appear anywhere in the store.
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button disabled={loading} className="ml-auto" type="submit">
+            {action}
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 };
-
-export default AssetForm;

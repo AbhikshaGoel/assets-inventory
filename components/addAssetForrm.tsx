@@ -58,6 +58,11 @@ interface AssetFormProps{
     processorName:string;
   }[];
 }
+const ramGBOptions = [4, 8, 16, 32, 64,128,256,512]; // Example RAM options in GB provided by the client
+
+const hddSddOptions = [256,512,1024,2048,4096,8192];// in GB
+const monitorSizeInInchOptions = [17,19,21,23,25,29,31,35,41,45,49];// in GB
+
 const assetSchema = z.object(
   {
     categoryMasterId: z.string().min(1, {
@@ -67,6 +72,10 @@ const assetSchema = z.object(
     manufacturerId: z.string().min(1, {message: "Required",}),
     locationId: z.string().min(1, {message: "Required.",}),
     osMasterId: z.string().min(1, {message: "Required.",}),
+    assetModelId: z.string().min(1, {message: "Required",}),
+    ramGBOptions: z.string().min(1, {message: "Required",}),
+    hddSddOptions: z.string().min(1, {message: "Required",}),
+    monitorSizeInInchOptions: z.string().min(1, {message: "Required",}),
     processorMasterId: z.string().min(1, {message: "Required.",}),
   }
 )
@@ -75,9 +84,11 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
 }:AssetFormProps) => {
   //console.log("data",categoryData);
   const [isPending, startTransition] = useTransition();
-  const [isComputer,setIsComputer] = useState<Boolean>(false);
   const [filteredSubCategoryData, setFilteredSubCategoryData] = useState<{ subCategoryMasterId: number; subCategoryName: string }[]>([]);
   const [error, setError] = useState<string | undefined>("");
+  const [filteredAssetData, setFilteredAssetData] = useState<{ assetModelId: number; manufacturerId:number; subcategoryId:number; assetModelName: string }[]>([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null); 
+  const [monitor, setMonitor] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | undefined>("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Store the selected country ID
   const form = useForm<z.infer<typeof assetSchema>>({
@@ -88,9 +99,25 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
       manufacturerId:"",
       locationId:"",
       osMasterId:"",
+      ramGBOptions:"",
+      hddSddOptions:"",
+      monitorSizeInInchOptions:"",
       processorMasterId:"",
     },
   });
+
+  function onSubcategory(value:any){
+    //console.log("subcategory", value);
+    setSelectedSubCategory(value);
+  const filteredAssetModel = assetData?.filter(assetData => assetData.subcategoryId === parseInt(value));
+  setFilteredAssetData(filteredAssetModel || []);
+  }
+  function onManufacturer(value:any){
+    //console.log("subcategory", value);
+    setSelectedSubCategory(value);
+  const filteredAssetModel1 = filteredAssetData?.filter(assetData => assetData.manufacturerId === parseInt(value));
+  setFilteredAssetData(filteredAssetModel1 || []);
+  }
 
 
   function onCategoryChange(value:any) {
@@ -102,11 +129,24 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   else{
     setSelectedCategory("0");
   }
+  if(parseInt(value)===1 || parseInt(value) ===5){
+    setMonitor("1");
+  }
   //if(categoryData.)
-}
+  }
 
   function onSubmit(values: z.infer<typeof assetSchema>) {
     //console.log("sdhb k")
+    const data={
+      assetModelId:values.assetModelId,
+      pomasterId:"1",
+      locationId:values.locationId,
+      belongsToUser:"518699",
+      hddCapacity:"0" || values.hddSddOptions,
+      monitorSize:"0" || values.monitorSizeInInchOptions,
+      ramMb:"0" || values.ramGBOptions,
+    }
+    axios.post
     console.log("subutmiited values:", values);
     setError("");
   }
@@ -164,6 +204,7 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
+                      onSubcategory(value);
                     }}
                     value={field.value}
                     defaultValue={field.value}
@@ -200,6 +241,7 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
+                      onManufacturer(value);
                     }}
                     value={field.value}
                     defaultValue={field.value}
@@ -332,9 +374,149 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="ramGBOptions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ram Size (GB)</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="bg-background">
+                          <SelectValue
+                            placeholder="Select Ram Size (GB)..."
+                            defaultValue={field.value || ""} 
+                          />
+                          <SelectContent>
+                            {ramGBOptions?.map((processor) => (
+                              <SelectItem
+                                key={processor}
+                                value={processor.toString()}
+                              >
+                                {processor}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </SelectTrigger>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="hddSddOptions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Hdd or SSD Size (GB)</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="bg-background">
+                          <SelectValue
+                            placeholder="Select a Szie (GB)..."
+                            defaultValue={field.value || ""} 
+                          />
+                          <SelectContent>
+                            {hddSddOptions?.map((processor) => (
+                              <SelectItem
+                                key={processor}
+                                value={processor.toString()}
+                              >
+                                {processor}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </SelectTrigger>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </>
           ) : null}
 
+          {monitor==="1"?(<FormField
+                control={form.control}
+                name="monitorSizeInInchOptions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Monitor Size (inch)</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="bg-background">
+                          <SelectValue
+                            placeholder="Select a Size (inch)..."
+                            defaultValue={field.value || ""} 
+                          />
+                          <SelectContent>
+                            {monitorSizeInInchOptions?.map((processor) => (
+                              <SelectItem
+                                key={processor}
+                                value={processor.toString()}
+                              >
+                                {processor}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </SelectTrigger>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />):null}
+
+
+          <FormField
+                control={form.control}
+                name="assetModelId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Asset Model</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="bg-background">
+                          <SelectValue
+                            placeholder="Select an asset Model..."
+                            defaultValue={field.value || ""} 
+                          />
+                          <SelectContent>
+                            {filteredAssetData?.map((processor) => (
+                              <SelectItem
+                                key={processor.assetModelId}
+                                value={processor.assetModelId.toString()}
+                              >
+                                {processor.assetModelName}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </SelectTrigger>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
         </div>
         <Button type="submit" className="w-full" disabled={isPending}>

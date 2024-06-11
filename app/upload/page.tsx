@@ -47,6 +47,10 @@ export default function Home() {
     const [subcategoryData, setSubCategoryData] = useState([]);
     const [locationData, setLocationData] = useState([]);
     const [manufacturerData, setManufacturerData] = useState([]);
+    const [osData, setOsData] = useState([]);
+    const [processorData, setProcessorData] = useState([]);
+    //const [locationData, setLocationData] = useState([]);
+    //const [manufacturerData, setManufacturerData] = useState([]);
 
     const [assetData, setAssetData] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState<number | null>(null); // Store the selected country ID
@@ -55,12 +59,18 @@ export default function Home() {
  useEffect(() => {
     const fetchData = async () => {
       try {
-        const [locationResponse, categoryResponse, assetResponse, subcategoryResponse, manufacturerResponse] = await Promise.all([
+        const [locationResponse, categoryResponse, assetResponse, subcategoryResponse, manufacturerResponse,osResponse,processorResponse] = await Promise.all([
           axios.get("http://10.14.84.34:3001/api/locationmaster"),
           axios.get("http://10.14.84.34:3001/api/categorymaster"),
           axios.get("http://10.14.84.34:3001/api/assetmodel"),
           axios.get("http://10.14.84.34:3001/api/subcategorymaster"),
-          axios.get("http://10.14.84.34:3001/api/manufacturer")
+          axios.get("http://10.14.84.34:3001/api/manufacturer"),
+          //
+          axios.get("http://10.14.84.34:3001/api/osmaster"),
+          axios.get("http://10.14.84.34:3001/api/processormaster"),
+          // axios.get("http://10.14.84.34:3001/api/assetmodel"),
+          // axios.get("http://10.14.84.34:3001/api/subcategorymaster"),
+          // axios.get("http://10.14.84.34:3001/api/manufacturer")
         ]);
 
         setLocationData(locationResponse.data);
@@ -68,6 +78,8 @@ export default function Home() {
         setAssetData(assetResponse.data);
         setSubCategoryData(subcategoryResponse.data);
         setManufacturerData(manufacturerResponse.data);
+        setOsData(osResponse.data);
+        setProcessorData(processorResponse.data);
         //console.log("gdf",categoryResponse.data);
         //setLoading(false);
       } catch (error) {
@@ -92,7 +104,7 @@ export default function Home() {
         <div className="w-1/2 space-y-4">
             
             <div className="h-full p-2 space-y-2 max-w-3xl mx-auto">
-            <AddAssetForm categoryData={categoryData} subcategoryData={subcategoryData} assetData={assetData} locationData={locationData} manufacturerData={manufacturerData}/>
+            <AddAssetForm categoryData={categoryData} />
             </div>
  
         </div>

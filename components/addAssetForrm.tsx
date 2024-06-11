@@ -31,8 +31,8 @@ interface AssetFormProps{
     categoryName: string;
   }[];
   subcategoryData?:{
-    categoryId: number;
-    categoryName: string;
+    subCategoryMasterId: number;
+    subCategoryName: string;
     categoryMasterId: number;
   }[];
   assetData?:{
@@ -63,11 +63,14 @@ const assetSchema = z.object(
     categoryMasterId: z.string().min(1, {
     message: "Required.",
   }),
+  subCategoryMasterId: z.string().min(1, {
+    message: "Required.",}),
   }
 )
 const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufacturerData}:AssetFormProps) => {
   //console.log("data",categoryData);
   const [isPending, startTransition] = useTransition();
+  const [filteredSubCategoryData, setFilteredSubCategoryData] = useState<{ subCategoryMasterId: number; subCategoryName: string }[]>([]);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Store the selected country ID
@@ -75,17 +78,15 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
     resolver: zodResolver(assetSchema),
     defaultValues: {
       categoryMasterId:"",
+      subCategoryMasterId:""
     },
   });
 
 
-   const handleCategorySelect = (selectedId: string) => {
-    // This function will be called when a country is selected or changed
-    console.log("Selected Country ID:", selectedId);
-    //setIsEditMode(true); // Enter edit mode when a country is selected
-    setSelectedCategory(parseInt(selectedId)); // Store the selected country ID as a number
-    // ... (your additional actions here if needed)
-  };
+  function onCategoryChange(value:any) {
+  const filteredSubcategories = subcategoryData?.filter(subcategory => subcategory.categoryMasterId === parseInt(value));
+  setFilteredSubCategoryData(filteredSubcategories || []);
+}
 
   function onSubmit(values: z.infer<typeof assetSchema>) {
     //console.log("sdhb k")
@@ -108,8 +109,9 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      handleCategorySelect(value);
-                    }}
+                     onCategoryChange(value); 
+                    }
+                  }
                     value={field.value}
                     defaultValue={field.value}
                   >
@@ -125,6 +127,42 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                             value={category.categoryId.toString()}
                           >
                             {category.categoryName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </SelectTrigger>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="subCategoryMasterId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Asset List</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="bg-background">
+                      <SelectValue
+                        placeholder="Select a category..."
+                        defaultValue={field.value || ""} // Set default value to an empty string
+                      />
+                      <SelectContent>
+                        {filteredSubCategoryData?.map((category) => (
+                          <SelectItem
+                            key={category.subCategoryMasterId}
+                            value={category.subCategoryMasterId.toString()}
+                          >
+                            {category.subCategoryName}
                           </SelectItem>
                         ))}
                       </SelectContent>

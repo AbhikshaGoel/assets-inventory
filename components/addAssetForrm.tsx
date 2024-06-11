@@ -60,11 +60,9 @@ interface AssetFormProps{
 }
 const assetSchema = z.object(
   {
-  categoryMasterId:z.string(),
-    categoryName: z
-    .string({
-      invalid_type_error: "Category must be a selected", // first one does not have message prop
-    })
+    categoryMasterId: z.string().min(1, {
+    message: "Required.",
+  }),
   }
 )
 const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufacturerData}:AssetFormProps) => {
@@ -75,7 +73,9 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // Store the selected country ID
   const form = useForm<z.infer<typeof assetSchema>>({
     resolver: zodResolver(assetSchema),
-    
+    defaultValues: {
+      categoryMasterId:"",
+    },
   });
 
 
@@ -88,9 +88,11 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   };
 
   function onSubmit(values: z.infer<typeof assetSchema>) {
+    //console.log("sdhb k")
     console.log("subutmiited values:", values);
     setError("");
   }
+  
 
   return (
     <Form {...form}>

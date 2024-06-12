@@ -68,6 +68,9 @@ const assetSchema = z.object(
     categoryMasterId: z.string().min(1, {
     message: "Required.",
   }),
+  assetSerialNumber: z.string().min(2, {
+    message: "Required Asset Serial Number.",
+  }),
   subCategoryMasterId: z.string().min(1, {message: "Required.",}),
     manufacturerId: z.string().min(1, {message: "Required",}),
     locationId: z.string().min(1, {message: "Required.",}),
@@ -94,6 +97,7 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   const form = useForm<z.infer<typeof assetSchema>>({
     resolver: zodResolver(assetSchema),
     defaultValues: {
+      assetSerialNumber:"",
       categoryMasterId:"",
       subCategoryMasterId:"",
       manufacturerId:"",
@@ -131,6 +135,8 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   }
   if(parseInt(value)===1 || parseInt(value) ===5){
     setMonitor("1");
+  }else{
+    setMonitor("0");
   }
   //if(categoryData.)
   }
@@ -138,16 +144,30 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   function onSubmit(values: z.infer<typeof assetSchema>) {
     //console.log("sdhb k")
     const data={
-      assetModelId:values.assetModelId,
+      assetId:"1",
+      assetModelId:values.assetModelId || "Default_Asset_Id_1234",
       pomasterId:"1",
-      locationId:values.locationId,
-      belongsToUser:"518699",
-      hddCapacity:"0" || values.hddSddOptions,
-      monitorSize:"0" || values.monitorSizeInInchOptions,
-      ramMb:"0" || values.ramGBOptions,
+      locationId:values.locationId ||"EKN Delhi Default Entry",
+      belongsToUser:"2",
+      hddCapacity:values.hddSddOptions || "-1",
+      monitorSize:values.monitorSizeInInchOptions||"-1",
+      ramGBOptions:values.ramGBOptions||"-1",
+      processorMasterId:values.processorMasterId||"-1",
+      osMasterId:values.osMasterId ||"-1",
+      status:"1",
+      purposeRemarks:"Single entry of Asset",
+      purchaseDate:"01-01-2024",
+      guaranteeStatus:"1",
+      assetSerialNumber:values.assetSerialNumber ||"-1",
     }
-    axios.post
-    console.log("subutmiited values:", values);
+
+    //console.log("data to send ------------  ",data);
+    axios.post(`http://10.14.84.34:3001/api/assetmaster`,data)
+    .then(response => {
+      console.log("Success!", response);
+      window.location.reload();
+    }).catch(error => {console.log(error);});
+    //console.log("subutmiited values:", data);
     setError("");
   }
   
@@ -156,6 +176,21 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+          <FormField
+            control={form.control}
+            name="assetSerialNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Enter Asset Serial Number</FormLabel>
+                <FormControl>
+
+                    <Input placeholder=" ISIO900 " {...field} />
+                 
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="categoryMasterId"

@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
 
 import { useTransition, useState, useEffect } from "react";
+import { Checkbox } from "./ui/checkbox";
 interface AssetFormProps{
   categoryData:{
     categoryId: number;
@@ -78,6 +79,7 @@ const assetSchema = z.object(
     assetModelId: z.string().min(1, {message: "Required",}),
     ramGBOptions: z.string().min(1, {message: "Required",}),
     hddSddOptions: z.string().min(1, {message: "Required",}),
+    WarrantyStatus: z.boolean().default(false),
     monitorSizeInInchOptions: z.string().min(1, {message: "Required",}),
     processorMasterId: z.string().min(1, {message: "Required.",}),
   }
@@ -107,6 +109,7 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
       hddSddOptions:"",
       monitorSizeInInchOptions:"",
       processorMasterId:"",
+      WarrantyStatus:false,
     },
   });
 
@@ -144,7 +147,7 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   function onSubmit(values: z.infer<typeof assetSchema>) {
     //console.log("sdhb k")
     const data={
-      assetId:"1",
+      
       assetModelId:values.assetModelId || "Default_Asset_Id_1234",
       pomasterId:"1",
       locationId:values.locationId ||"EKN Delhi Default Entry",
@@ -157,8 +160,8 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
       status:"1",
       purposeRemarks:"Single entry of Asset",
       purchaseDate:"01-01-2024",
-      guaranteeStatus:"1",
-      assetSerialNumber:values.assetSerialNumber ||"-1",
+      guaranteeStatus:values.WarrantyStatus||false,
+      assetSerialNumber:values.assetSerialNumber ||0,
     }
 
     //console.log("data to send ------------  ",data);
@@ -547,6 +550,25 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
                           </SelectContent>
                         </SelectTrigger>
                       </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="WarrantyStatus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WarrantyStatus</FormLabel>
+                    <FormControl>
+                      <div className="py-2 flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                      <Label>Check if Asset is in Warranty</Label>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -59,10 +59,22 @@ interface AssetFormProps{
     processorName:string;
   }[];
 }
-const ramGBOptions = [4, 8, 16, 32, 64,128,256,512]; // Example RAM options in GB provided by the client
+const ramGBOptions = ['8 DDR4', '8 DDR5', '16 DDR4',
+   '16 DDR5', '32 DDR4', '32 DDR5', '64 DDR4', 
+   '64 DDR5', '128 DDR4', '128 DDR5', '256 DDR4',
+    '256 DDR5', '512 DDR4', '512 DDR5'];
+
 
 const hddSddOptions = [256,512,1024,2048,4096,8192];// in GB
-const monitorSizeInInchOptions = [17,19,21,23,25,29,31,35,41,45,49];// in GB
+const monitorSizeInInchOptions = [
+    11.6, 13.3, 14,
+    15, 15.4, 17, 18.5, 19, 20, 21, 21.5, 21.7, // Additional sizes
+    22, 23, 23.6,23.7, // Additional sizes
+    24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 39,
+    42, 46, 48, 50, 55, 58, 60, 64, 70, 80, 84,
+    99, 102, 108, 111, 152
+];
+
 
 const assetSchema = z.object(
   {
@@ -89,6 +101,9 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
 }:AssetFormProps) => {
   //console.log("data",categoryData);
   const [isPending, startTransition] = useTransition();
+  const [assetListSelectedValue, setAssetListSelectedValue]= useState("-1");
+  const [subCategoryListSelectedValue, setSubCategoryListSelectedValue] = useState("-1");
+  const [manufacturerListSelectedValue, setManufacturerListSelectedValue] = useState("-1");
   const [filteredSubCategoryData, setFilteredSubCategoryData] = useState<{ subCategoryMasterId: number; subCategoryName: string }[]>([]);
   const [error, setError] = useState<string | undefined>("");
   const [filteredAssetData, setFilteredAssetData] = useState<{ assetModelId: number; manufacturerId:number; subcategoryId:number; assetModelName: string }[]>([]);
@@ -114,20 +129,33 @@ const AssetForm = ({categoryData,subcategoryData,assetData,locationData, manufac
   });
 
   function onSubcategory(value:any){
+    setSubCategoryListSelectedValue(value)
     //console.log("subcategory", value);
     setSelectedSubCategory(value);
-  const filteredAssetModel = assetData?.filter(assetData => assetData.subcategoryId === parseInt(value));
+  const filteredAssetModel = assetData?.filter(assetData => assetData.subcategoryId === parseInt(subCategoryListSelectedValue));
+  if(manufacturerListSelectedValue){
+  const f=filteredAssetModel?.filter(assetData=>assetData.manufacturerId===parseInt(manufacturerListSelectedValue));
+  setFilteredAssetData(f || []);
+  return;
+  }
   setFilteredAssetData(filteredAssetModel || []);
+    //onManufacturer(value);
   }
   function onManufacturer(value:any){
+    setManufacturerListSelectedValue(value);
+    //onSubcategory(setSubCategoryListSelectedValue);
     //console.log("subcategory", value);
-    setSelectedSubCategory(value);
-  const filteredAssetModel1 = filteredAssetData?.filter(assetData => assetData.manufacturerId === parseInt(value));
-  setFilteredAssetData(filteredAssetModel1 || []);
+    //setSelectedSubCategory(value);
+  const filteredAssetModel1 = assetData?.filter(assetData => assetData.manufacturerId === parseInt(value));
+  const f=filteredAssetModel1?.filter(data=> data.subcategoryId === parseInt(subCategoryListSelectedValue));
+  //console.log("manufacturer", value);
+  console.log("filtered Asset Model", f);
+  setFilteredAssetData(f || []);
   }
 
 
   function onCategoryChange(value:any) {
+    setAssetListSelectedValue(value);
   const filteredSubcategories = subcategoryData?.filter(subcategory => subcategory.categoryMasterId === parseInt(value));
   setFilteredSubCategoryData(filteredSubcategories || []);
   if(parseInt(value)===1 || parseInt(value) === 4){
